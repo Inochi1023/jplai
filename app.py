@@ -8,7 +8,7 @@ import tempfile
 import os
 from audio_recorder_streamlit import audio_recorder
 
-gemini_api_key = "AIzaSyDB1SGZ4TJ6UbN5919JtNwZBR-8VB4Fgiw"
+gemini_api_key = "AIzaSyAoy_kLi5udJ7rl58s8URzp7q-1W8lLve4"
 
 
 # 페이지 설정
@@ -38,6 +38,15 @@ st.markdown("""
 .ai-message {
     background-color: #F3E5F5;
     border-left: 4px solid #9C27B0;
+}
+.translation-box {
+    background-color: #E8F5E8;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    font-style: italic;
+    color: #2E7D32;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -99,11 +108,9 @@ def get_gemini_response(user_input):
     try:
         prompt = f"""
         너는 일본어로 사용자와 일상적인 대화를 할 거고
-        사용자의 발음을 분석해서 정확도를 0%~100%로 나타내주고 교정할 수 있는 자연스러운 표현을 정해주고
+        사용자의 발음을 분석해서 정확도를 0%~100%로 나타내주고 발음교정을 할수 있게 그 발음에 대한 피드백을 해주고 교정할 수 있는 자연스러운 표현을 정해주고
         너가 자연스럽게 대화를 이어나가면 돼
-
         사용자 입력: "{user_input}"
-
         다음 형식으로 응답해주세요:
         "당신의 발음 정확도:N%\n
         자연스러운 표현:(너가 판단했을때 자연스러운 표현)\n
@@ -209,7 +216,15 @@ with col1:
 
                 # Gemini로 분석
                 ai_response = get_gemini_response(recognized_text)
-                st.session_state.messages.append({"role": "assistant", "content": ai_response})
+                
+                # 번역 추가
+                translation = translate_japanese_to_korean(ai_response)
+                
+                st.session_state.messages.append({
+                    "role": "assistant", 
+                    "content": ai_response,
+                    "translation": translation
+                })
 
                 # TTS 생성
                 audio_response = text_to_speech(ai_response)
@@ -249,6 +264,7 @@ for message in st.session_state.messages:
             {message["content"]}
         </div>
         """, unsafe_allow_html=True)
+
 
         # 오디오가 있으면 재생
         if "audio" in message:
