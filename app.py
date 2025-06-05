@@ -7,8 +7,10 @@ import base64
 import tempfile
 import os
 from audio_recorder_streamlit import audio_recorder
+from dotenv import load_dotenv
 
-gemini_api_key = "AIzaSyAoy_kLi5udJ7rl58s8URzp7q-1W8lLve4"
+load_dotenv()
+gemini_api_key = os.getenv("GEMINI_API_KEY")
 
 
 # 페이지 설정
