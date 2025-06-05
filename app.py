@@ -39,14 +39,7 @@ st.markdown("""
     background-color: #F3E5F5;
     border-left: 4px solid #9C27B0;
 }
-.translation-box {
-    background-color: #E8F5E8;
-    border: 1px solid #4CAF50;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 10px;
-    font-style: italic;
-    color: #2E7D32;
+
 }
 </style>
 """, unsafe_allow_html=True)
@@ -218,10 +211,6 @@ with col1:
                 ai_response = get_gemini_response(recognized_text)
             
                 
-                st.session_state.messages.append({
-                    "role": "assistant", 
-                    "content": ai_response,
-                    "translation": translation
                 })
 
                 # TTS 생성
