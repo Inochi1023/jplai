@@ -216,9 +216,7 @@ with col1:
 
                 # Gemini로 분석
                 ai_response = get_gemini_response(recognized_text)
-                
-                # 번역 추가
-                translation = translate_japanese_to_korean(ai_response)
+            
                 
                 st.session_state.messages.append({
                     "role": "assistant", 
