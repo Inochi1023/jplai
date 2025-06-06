@@ -9,8 +9,7 @@ import os
 from audio_recorder_streamlit import audio_recorder
 from dotenv import load_dotenv
 
-load_dotenv()
-gemini_api_key = os.getenv("GEMINI_API_KEY")
+gemini_api_key = st.secrets["GEMINI_API_KEY"]
 
 
 # 페이지 설정
